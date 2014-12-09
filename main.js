@@ -72,7 +72,7 @@ function doGenerateReverb() {
     //   feedbackDiv.appendChild(document.createElement('br'));
     //   feedbackDiv.appendChild(document.createTextNode('Lowpass response at end: '));
 
-    //   var freqBins = sampleRate / 100;
+    //   var freqBins = sampleRate.value / 100;
     //   var frequencyHz = new Float32Array(freqBins);
     //   for (var i = 0; i < freqBins; i++) {
     //     frequencyHz[i] = (i+1) * 50;

@@ -89,7 +89,11 @@ function doGenerateReverb() {
 function playReverb() {
   var node = audioContext.createBufferSource();
   node.buffer = reverbIR;
-  node.connect(audioContext.destination);
+  var gain = audioContext.createGain();
+  gain.gain.value = 0.1;
+  
+  node.connect(gain);
+  gain.connect(audioContext.destination);
   node.start();
 }
 

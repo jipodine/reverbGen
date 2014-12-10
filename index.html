@@ -57,13 +57,18 @@
   </tr>
   <tr>
     <td><label>Channels:</label></td>
-    <td>2 (stereo)</td>
+    <td>
+      <input id="numChannels" type="number" min="0" max="4"
+             step="1" value="2">
+      (Total number of channels. 4 is the current Web Audio maximum.)
+    </td>
   </tr>
   <tr>
     <td><label for="sampleRate">Sample rate:</label></td>
     <td>
       <input id="sampleRate" type="number" min="22050" max="96000"
-             step="50" value="44100"> samples/s
+             step="50" value="44100">
+      samples/s (It must be the same as the audio context.)
     </td>
   </tr>
 </table>

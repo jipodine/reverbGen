@@ -56,7 +56,7 @@ function doGenerateReverb() {
     sampleRate: Number(document.getElementById('sampleRate').value),
     lpFreqStart: Number(document.getElementById('lpFreqStart').value),
     lpFreqEnd: Number(document.getElementById('lpFreqEnd').value),
-    numChannels: 2            // TODO: let user specify
+    numChannels: Number(document.getElementById('numChannels').value),
   };
   reverbFilename = ('reverb' + params.fadeInTime + '-' + params.decayTime + '-' +
                     params.lpFreqStart + '-' + params.lpFreqEnd).replace(/\./g, '_') + '.wav';

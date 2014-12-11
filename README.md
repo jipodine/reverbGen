@@ -1,11 +1,14 @@
 reverbGen
 =========
 
+(Forked from https://github.com/adelespinasse/reverbGen)
+
 A JavaScript library for generating artificial reverb impulse responses.
 
 This library generates simulated room impulse responses that sound fairly decent when used in convolution reverb effects, including the Web Audio API's ConvolverNode. You can link the code into your web apps to generate impulse responses as needed, or you can generate sound files in advance to use in any audio application.
 
-If you just want to generate some impulse responses, see the hosted version at [aldel.com/reverbgen](http://aldel.com/reverbgen).
+If you just want to generate some impulse responses, see the hosted
+version at [github.io](../blob/gh-pages)
 
 If you want to use the library, the file you need is reverbgen.js. The other files implement the hosted web app linked above, and are not part of the library proper. The main function for generating impulse responses is reverbgen.generateReverb().
 

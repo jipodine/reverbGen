@@ -35,7 +35,14 @@
     </td>
   </tr>
   <tr>
-    <td><label for="decayTime">-60db decay time:</label></td>
+    <td><label for="decayThreshold">decay threshold:</label></td>
+    <td>
+      <input id="decayThreshold" type="number" min="-150" max="0"
+             step="10" value="-60"> dB
+    </td>
+  </tr>
+  <tr>
+    <td><label for="decayTime">decay time:</label></td>
     <td>
       <input id="decayTime" type="number" min="0.1" max="10"
              step="0.1" value="1.5"> seconds
@@ -49,7 +56,7 @@
     </td>
   </tr>
   <tr>
-    <td><label for="lpFreqEnd">Lowpass frequency at -60dB:</label></td>
+    <td><label for="lpFreqEnd">Lowpass frequency at decay threshold:</label></td>
     <td>
       <input id="lpFreqEnd" type="number" min="0" max="20000"
              step="100" value="1000"> Hz

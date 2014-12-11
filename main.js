@@ -52,13 +52,15 @@ function doGenerateReverb() {
   document.getElementById('playSection').style.display = 'none';
   var params = {
     fadeInTime: Number(document.getElementById('fadeInTime').value),
+    decayThreshold : Number(document.getElementById('decayThreshold').value),
     decayTime: Number(document.getElementById('decayTime').value),
     sampleRate: Number(document.getElementById('sampleRate').value),
     lpFreqStart: Number(document.getElementById('lpFreqStart').value),
     lpFreqEnd: Number(document.getElementById('lpFreqEnd').value),
     numChannels: Number(document.getElementById('numChannels').value),
   };
-  reverbFilename = ('reverb' + params.fadeInTime + '-' + params.decayTime + '-' +
+  reverbFilename = ('reverb' + params.fadeInTime + '-' +
+                    params.decayTime + '-' + params.decayThreshold + '-' +
                     params.lpFreqStart + '-' + params.lpFreqEnd).replace(/\./g, '_') + '.wav';
   reverbGen.generateReverb(params, function(result) {
     reverbIR = result;
@@ -98,7 +100,7 @@ function playReverb() {
 }
 
 function saveReverb() {
-  reverbGen.saveWavFile(reverbIR, reverbFilename, 5);
+  reverbGen.saveWavFile(reverbIR, reverbFilename);
 }
 
 function toggleDemoSource() {

@@ -28,14 +28,15 @@ var reverbGen = {};
   reverbGen.generateReverb = function(params, callback) {
     var sampleRate = params.sampleRate || 0;
     var numChannels = params.numChannels || 2;
-    // params.decayTime is the -60dB fade time. We let it go 50% longer to get to -90dB.
-    var totalTime = params.decayTime * 1.5;
-    var decaySampleFrames = Math.round(params.decayTime * sampleRate);
-    var numSampleFrames = Math.round(totalTime * sampleRate);
-    var fadeInSampleFrames = Math.round((params.fadeInTime || 0) * sampleRate);
-    // 60dB is a factor of 1 million in power, or 1000 in amplitude.
-    var decayBase = Math.pow(1 / 1000, 1 / decaySampleFrames);
+    var fadeInTime = params.fadeInTime || 0;
+    var decayThreshold = params.decayThreshold || -60;
+    var decayTime = params.decayTime || 5;
 
+    var fadeInSampleFrames = Math.round(fadeInTime * sampleRate);
+    var decaySampleFrames = Math.round(decayTime * sampleRate);
+    var decayBase = Math.pow(dbToPower(decayThreshold), 1 / decaySampleFrames);
+    var numSampleFrames = fadeInSampleFrames + decaySampleFrames;
+    
     var context = new OfflineAudioContext(numChannels, numSampleFrames, sampleRate);
     var reverbIR = context.createBuffer(numChannels, numSampleFrames, sampleRate);
     
@@ -81,14 +82,8 @@ var reverbGen = {};
       truncates it if there's a lot of "silence" at the end.
 
       @param {!AudioBuffer} buffer The buffer to save.
-      @param {string} name Name of file to create.
-      @param {number?} opt_minTail Defines what counts as "silence" for
-      auto-truncating the buffer. If there is a point past which every
-      value of every channel is less than opt_minTail, then the buffer
-      is truncated at that point. This is expressed as an integer,
-      applying to the post-normalized and integer-converted
-      buffer. The default is 0, meaning don't truncate. */
-  reverbGen.saveWavFile = function(buffer, name, opt_minTail) {
+      @param {string} name Name of file to create. */
+  reverbGen.saveWavFile = function(buffer, name) {
     var bitsPerSample = 16;
     var bytesPerSample = 2;
     var sampleRate = buffer.sampleRate;
@@ -106,19 +101,7 @@ var reverbGen = {};
     if (max) {
       scale = 32767 / max;
     }
-    // Find truncation point.
-    if (opt_minTail) {
-      var truncateAt = 0;
-      for (var i = 0; i < numChannels; i++) {
-        for (var j = 0; j < numSampleFrames; j++) {
-          var absSample = Math.abs(Math.round(scale * channels[i][j]));
-          if (absSample > opt_minTail) {
-            truncateAt = j;
-          }
-        }
-      }
-      numSampleFrames = truncateAt + 1;
-    }
+
     var sampleDataBytes = bytesPerSample * numChannels * numSampleFrames;
     var fileBytes = sampleDataBytes + 44;
     var arrayBuffer = new ArrayBuffer(fileBytes);
@@ -207,6 +190,12 @@ var reverbGen = {};
       @return {number} A random number from -1 to 1. */
   var randomSample = function() {
     return Math.random() * 2 - 1;
+  };
+
+  /** @private
+      @return {number} An exponential gain value (1e-6 for -60dB*/
+  var dbToPower = function(dbValue) {
+    return Math.pow(10, dbValue / 10);
   };
 
 }());

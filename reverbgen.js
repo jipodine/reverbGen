@@ -34,7 +34,7 @@ var reverbGen = {};
 
     var fadeInSampleFrames = Math.round(fadeInTime * sampleRate);
     var decaySampleFrames = Math.round(decayTime * sampleRate);
-    var decayBase = Math.pow(dbToPower(decayThreshold), 1 / decaySampleFrames);
+    var decayBase = Math.pow(dBToPower(decayThreshold), 1 / decaySampleFrames);
     var numSampleFrames = fadeInSampleFrames + decaySampleFrames;
     
     var context = new OfflineAudioContext(numChannels, numSampleFrames, sampleRate);
@@ -194,8 +194,8 @@ var reverbGen = {};
 
   /** @private
       @return {number} An exponential gain value (1e-6 for -60dB*/
-  var dbToPower = function(dbValue) {
-    return Math.pow(10, dbValue / 10);
+  var dBToPower = function(dBValue) {
+    return Math.pow(10, dBValue / 10);
   };
 
 }());

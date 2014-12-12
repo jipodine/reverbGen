@@ -34,19 +34,20 @@ var reverbGen = {};
 
     var fadeInSampleFrames = Math.round(fadeInTime * sampleRate);
     var decaySampleFrames = Math.round(decayTime * sampleRate);
-    var decayBase = Math.pow(dBToPower(decayThreshold), 1 / decaySampleFrames);
+    var decayBase = Math.pow(dBToPower(decayThreshold), 1 / (decaySampleFrames - 1));
     var numSampleFrames = fadeInSampleFrames + decaySampleFrames;
     
     var context = new OfflineAudioContext(numChannels, numSampleFrames, sampleRate);
     var reverbIR = context.createBuffer(numChannels, numSampleFrames, sampleRate);
-    
+
+    var fadeInFactor = 1 / (fadeInSampleFrames - 1);
     for (var i = 0; i < numChannels; i++) {
       var chan = reverbIR.getChannelData(i);
-      for (var j = 0; j < numSampleFrames; j++) {
-        chan[j] = randomSample() * Math.pow(decayBase, j);
-      }
       for (var j = 0; j < fadeInSampleFrames; j++) {
-        chan[j] *= (j / fadeInSampleFrames);
+        chan[j] = randomSample() * j * fadeInFactor;
+      }
+      for (var k = 0; j < numSampleFrames; j++, k++) {
+        chan[j] = randomSample() * Math.pow(decayBase, k);
       }
     }
 
@@ -162,7 +163,7 @@ var reverbGen = {};
     filter.type = "lowpass";
     filter.Q.value = 0.0001;
     filter.frequency.setValueAtTime(lpFreqStart, 0);
-    filter.frequency.linearRampToValueAtTime(lpFreqEnd, lpFreqEndAt);
+    filter.frequency.exponentialRampToValueAtTime(lpFreqEnd, lpFreqEndAt);
 
     player.connect(filter);
     filter.connect(context.destination);

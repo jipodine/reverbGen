@@ -98,14 +98,18 @@
       </div>
       <label>Input:
         <select id="demoSourceSelector" onchange="changeDemoSource()">
-          <option value="Half-time Drums" selected>Half-time Drums</option>
-          <option value="Heavy Rock Drums">Heavy Rock Drums</option>
-          <option value="Cello">Cello</option>
-          <option value="Pizzicato">Pizzicato</option>
-          <option value="Male Speaker">Male Speaker</option>
+          <option value="drysounds/Half-time Drums.wav" selected>Half-time Drums.wav</option>
+          <option value="drysounds/Heavy Rock Drums.wav">Heavy Rock Drums.wav</option>
+          <option value="drysounds/Cello.wav">Cello.wav</option>
+          <option value="drysounds/Pizzicato.wav">Pizzicato.wav</option>
+          <option value="drysounds/Male Speaker.wav">Male Speaker.wav</option>
         </select>
+        or add local files
+        <input type="file" accept="audio/*"
+               id="localSourceFiles" name="localSourceFiles[]" multiple
+               onchange="localSourceListUpdate()" />
       </label>
-    </div>
+    </div><br><br>
     <div>Dry<input id="demoMix" type="range" min="-24" max="0" step="1" value="-10" oninput="changeDemoMix()" />Wet</div>
   </div><br><br>
   <div id="feedbackSection"></div>

@@ -103,6 +103,17 @@ function saveReverb() {
   reverbGen.saveWavFile(reverbIR, reverbFilename);
 }
 
+function localSourceListUpdate() {
+  var files = document.getElementById('localSourceFiles').files;
+  var output = document.getElementById('demoSourceSelector');
+
+  for (var i = 0, f; f = files[i]; i++) {
+    var filename = escape(f.name);
+    var u = URL.createObjectURL(f);
+    output.add(new Option(filename, u));
+  }
+}
+
 function toggleDemoSource() {
   changeDemoSource();
 }
@@ -140,7 +151,8 @@ function loadDemoSource(name, callback) {
   loadingDiv.style.display = 'block';
 
   var request = new XMLHttpRequest();
-  var url = 'drysounds/' + name + '.wav';
+
+  var url = name;
   request.open('GET', url);
   request.responseType = 'arraybuffer';
 

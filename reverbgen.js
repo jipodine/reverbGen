@@ -36,9 +36,16 @@ var reverbGen = {};
     var decaySampleFrames = Math.round(decayTime * sampleRate);
     var numSampleFrames = fadeInSampleFrames + decaySampleFrames;
     var decayBase = Math.pow(dBToPower(decayThreshold), 1 / (numSampleFrames - 1));
-    
-    var context = new webkitOfflineAudioContext(numChannels, numSampleFrames, sampleRate) ||
-        new OfflineAudioContext(numChannels, numSampleFrames, sampleRate);
+
+    // Monkey was not there, yet.
+    var context = (typeof(OfflineAudioContext) === 'function' ?
+                   new OfflineAudioContext(numChannels, numSampleFrames, sampleRate) :
+                   (typeof(webkitOfflineAudioContext) === 'function' ?
+                    new webkitOfflineAudioContext(numChannels, numSampleFrames, sampleRate) :
+                    null
+                   )
+                  );
+
     var reverbIR = context.createBuffer(numChannels, numSampleFrames, sampleRate);
 
     var fadeInFactor = 1 / (fadeInSampleFrames - 1);
@@ -153,8 +160,15 @@ var reverbGen = {};
       return;
     }
     var channelData = getAllChannelData(input);
-    var context = new webkitOfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate) ||
-        new OfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate);
+
+    var context = (typeof(OfflineAudioContext) === 'function' ?
+                   new OfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate) :
+                   (typeof(webkitOfflineAudioContext) === 'function' ?
+                    new webkitOfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate) :
+                    null
+                   )
+                  );
+
     var player = context.createBufferSource();
     player.buffer = input;
     var filter = context.createBiquadFilter();

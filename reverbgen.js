@@ -37,7 +37,8 @@ var reverbGen = {};
     var numSampleFrames = fadeInSampleFrames + decaySampleFrames;
     var decayBase = Math.pow(dBToPower(decayThreshold), 1 / (numSampleFrames - 1));
     
-    var context = new OfflineAudioContext(numChannels, numSampleFrames, sampleRate);
+    var context = new webkitOfflineAudioContext(numChannels, numSampleFrames, sampleRate) ||
+        new OfflineAudioContext(numChannels, numSampleFrames, sampleRate);
     var reverbIR = context.createBuffer(numChannels, numSampleFrames, sampleRate);
 
     var fadeInFactor = 1 / (fadeInSampleFrames - 1);
@@ -152,7 +153,8 @@ var reverbGen = {};
       return;
     }
     var channelData = getAllChannelData(input);
-    var context = new OfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate);
+    var context = new webkitOfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate) ||
+        new OfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate);
     var player = context.createBufferSource();
     player.buffer = input;
     var filter = context.createBiquadFilter();
@@ -167,7 +169,7 @@ var reverbGen = {};
 
     player.connect(filter);
     filter.connect(context.destination);
-    player.start();
+    player.start(0);
     context.oncomplete = function(event) {
       callback(event.renderedBuffer);
     };

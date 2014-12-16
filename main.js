@@ -120,7 +120,7 @@ function toggleDemoSource() {
 
 function changeDemoSource() {
   if (demoSource) {
-    demoSource.stop();
+    demoSource.stop(0);
     demoSource = null;
   }
   if (document.getElementById('toggleDemoSource').checked) {
@@ -137,7 +137,7 @@ function initDemoSource() {
     demoSource.loop = true;
     demoSource.loopEnd = buffer.duration;
     demoSource.connect(masterGain);
-    demoSource.start();
+    demoSource.start(0);
   });
 }
 

@@ -59,7 +59,8 @@ var reverbGen = {};
       }
     }
 
-    applyGradualLowpass(reverbIR, params.lpFreqStart || 0, params.lpFreqEnd || 0, params.decayTime, callback);
+    applyGradualLowpass(reverbIR, params.lpFreqStart || 0, params.lpFreqEnd || 0,
+                        params.fadeInTime + params.decayTime, callback);
   };
 
   /** Creates a canvas element showing a graph of the given data.

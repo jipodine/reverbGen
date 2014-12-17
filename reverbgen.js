@@ -38,13 +38,20 @@ var reverbGen = {};
     var decayBase = Math.pow(dBToPower(decayThreshold), 1 / (numSampleFrames - 1));
 
     // Monkey was not there, yet.
-    var context = (typeof(OfflineAudioContext) === 'function' ?
-                   new OfflineAudioContext(numChannels, numSampleFrames, sampleRate) :
-                   (typeof(webkitOfflineAudioContext) === 'function' ?
-                    new webkitOfflineAudioContext(numChannels, numSampleFrames, sampleRate) :
-                    null
-                   )
-                  );
+    var context = null;
+    if(typeof(OfflineAudioContext) === 'function' ||
+       typeof(OfflineAudioContext) === 'object') {
+      context = new OfflineAudioContext(numChannels, numSampleFrames, sampleRate);
+    }
+    else if(typeof(webkitOfflineAudioContext) === 'function' ||
+            typeof(webkitOfflineAudioContext) === 'object')  {
+      context = new webkitOfflineAudioContext(numChannels, numSampleFrames, sampleRate);
+    }
+
+    if(context === null) {
+      callback(null);
+      return;
+    }
 
     var reverbIR = context.createBuffer(numChannels, numSampleFrames, sampleRate);
 
@@ -59,7 +66,8 @@ var reverbGen = {};
       }
     }
 
-    applyGradualLowpass(reverbIR, params.lpFreqStart || 0, params.lpFreqEnd || 0, params.decayTime, callback);
+    applyGradualLowpass(reverbIR, params.lpFreqStart || 0, params.lpFreqEnd || 0,
+                        params.fadeInTime + params.decayTime, callback);
   };
 
   /** Creates a canvas element showing a graph of the given data.
@@ -161,13 +169,20 @@ var reverbGen = {};
     }
     var channelData = getAllChannelData(input);
 
-    var context = (typeof(OfflineAudioContext) === 'function' ?
-                   new OfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate) :
-                   (typeof(webkitOfflineAudioContext) === 'function' ?
-                    new webkitOfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate) :
-                    null
-                   )
-                  );
+    var context = null;
+    if(typeof(OfflineAudioContext) === 'function' ||
+       typeof(OfflineAudioContext) === 'object') {
+      context = new OfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate);
+    }
+    else if(typeof(webkitOfflineAudioContext) === 'function' ||
+            typeof(webkitOfflineAudioContext) === 'object')  {
+      context =  new webkitOfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate);
+    }
+
+    if(context === null) {
+      callback(null);
+      return;
+    }
 
     var player = context.createBufferSource();
     player.buffer = input;

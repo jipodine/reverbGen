@@ -37,16 +37,7 @@ var reverbGen = {};
     var numSampleFrames = fadeInSampleFrames + decaySampleFrames;
     var decayBase = Math.pow(dBToPower(decayThreshold), 1 / (numSampleFrames - 1));
 
-    // Monkey was not there, yet.
-    var context = null;
-    if(typeof(OfflineAudioContext) === 'function' ||
-       typeof(OfflineAudioContext) === 'object') {
-      context = new OfflineAudioContext(numChannels, numSampleFrames, sampleRate);
-    }
-    else if(typeof(webkitOfflineAudioContext) === 'function' ||
-            typeof(webkitOfflineAudioContext) === 'object')  {
-      context = new webkitOfflineAudioContext(numChannels, numSampleFrames, sampleRate);
-    }
+    var context = new OfflineAudioContext(numChannels, numSampleFrames, sampleRate);
 
     if(context === null) {
       callback(null);

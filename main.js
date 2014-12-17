@@ -96,7 +96,7 @@ function playReverb() {
   
   node.connect(gain);
   gain.connect(audioContext.destination);
-  node.start();
+  node.start(0);
 }
 
 function saveReverb() {

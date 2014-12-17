@@ -1,0 +1,3 @@
+[submodule "submodules/AudioContext-MonkeyPatch"]
+	path = submodules/AudioContext-MonkeyPatch
+	url = https://github.com/jipodine/AudioContext-MonkeyPatch.git

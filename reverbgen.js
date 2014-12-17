@@ -52,7 +52,7 @@ var reverbGen = {};
       callback(null);
       return;
     }
-
+    
     var reverbIR = context.createBuffer(numChannels, numSampleFrames, sampleRate);
 
     var fadeInFactor = 1 / (fadeInSampleFrames - 1);

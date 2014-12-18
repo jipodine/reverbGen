@@ -160,15 +160,7 @@ var reverbGen = {};
     }
     var channelData = getAllChannelData(input);
 
-    var context = null;
-    if(typeof(OfflineAudioContext) === 'function' ||
-       typeof(OfflineAudioContext) === 'object') {
-      context = new OfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate);
-    }
-    else if(typeof(webkitOfflineAudioContext) === 'function' ||
-            typeof(webkitOfflineAudioContext) === 'object')  {
-      context =  new webkitOfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate);
-    }
+    var context = new OfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate);
 
     if(context === null) {
       callback(null);
@@ -189,7 +181,7 @@ var reverbGen = {};
 
     player.connect(filter);
     filter.connect(context.destination);
-    player.start(0);
+    player.start();
     context.oncomplete = function(event) {
       callback(event.renderedBuffer);
     };

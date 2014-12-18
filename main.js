@@ -96,7 +96,7 @@ function playReverb() {
   
   node.connect(gain);
   gain.connect(audioContext.destination);
-  node.start(0);
+  node.start();
 }
 
 function saveReverb() {
@@ -120,7 +120,7 @@ function toggleDemoSource() {
 
 function changeDemoSource() {
   if (demoSource) {
-    demoSource.stop(0);
+    demoSource.stop();
     demoSource = null;
   }
   if (document.getElementById('toggleDemoSource').checked) {
@@ -137,7 +137,7 @@ function initDemoSource() {
     demoSource.loop = true;
     demoSource.loopEnd = buffer.duration;
     demoSource.connect(masterGain);
-    demoSource.start(0);
+    demoSource.start();
   });
 }
 
